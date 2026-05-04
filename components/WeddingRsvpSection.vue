@@ -14,7 +14,7 @@
           <h3>Código de reserva</h3>
 
           <p class="deadline-message">
-            Esperamos tu confirmación antes del <strong>30 de mayo</strong>.
+            Esperamos tu confirmación antes del <strong>30 de junio</strong>.
           </p>
 
           <v-alert

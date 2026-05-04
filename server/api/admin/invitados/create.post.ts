@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
         body.foto || null,
         codReserva,
         tokenAcceso,
-        body.fecha_vencimiento || '2025-06-01',
+        body.fecha_vencimiento || '2026-06-30',
         body.comentario || null
     ])
 
