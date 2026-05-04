@@ -2,23 +2,29 @@
   <section class="parents-section">
     <div class="parents-container">
 
-
       <p class="parents-intro">
         Bendecidos por Dios y rodeados del amor de nuestros padres
       </p>
 
       <v-card class="parent-card" elevation="0">
+        <!-- NOVIA -->
         <div class="parent-block">
           <p class="parent-title">Padres de la novia</p>
 
-          <p class="parent-name">
-            Francisco Esteban Sosa Martinez <span class="cross">†</span>
+          <p
+              class="parent-name clickable"
+              @click="openModal = true"
+          >
+            Francisco Esteban Sosa Martinez
+            <span class="cross">†</span>
           </p>
+
           <p class="parent-name">Elsy Beatriz Mejia Fuentes</p>
         </div>
 
         <div class="divider"></div>
 
+        <!-- NOVIO -->
         <div class="parent-block">
           <p class="parent-title">Padres del novio</p>
 
@@ -27,10 +33,18 @@
         </div>
       </v-card>
     </div>
+
+    <!-- MODAL -->
+    <v-dialog v-model="openModal" max-width="360">
+      <v-card class="photo-modal" elevation="0">
+        <img src="/images/FESM.jpeg" alt="Foto" class="photo-img" />
+      </v-card>
+    </v-dialog>
   </section>
 </template>
 
 <script setup lang="ts">
+const openModal = ref(false)
 </script>
 
 <style scoped>
@@ -45,22 +59,6 @@
   text-align: center;
 }
 
-.section-kicker {
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  color: #2984d1;
-  font-size: 13px;
-  margin-bottom: 14px;
-}
-
-h2 {
-  font-family: Georgia, serif;
-  font-size: clamp(36px, 5vw, 56px);
-  font-weight: 400;
-  color: #0c253c;
-  margin-bottom: 16px;
-}
-
 .parents-intro {
   max-width: 560px;
   margin: 0 auto 34px;
@@ -71,6 +69,7 @@ h2 {
   text-transform: uppercase;
 }
 
+/* CARD */
 .parent-card {
   padding: 48px 34px;
   border-radius: 34px;
@@ -79,6 +78,7 @@ h2 {
   box-shadow: 0 20px 60px rgba(12, 37, 60, 0.10);
 }
 
+/* BLOQUES */
 .parent-block {
   display: grid;
   gap: 10px;
@@ -92,21 +92,44 @@ h2 {
   margin-bottom: 14px;
 }
 
+/* NOMBRES */
 .parent-name {
-  font-size: clamp(15px, 3vw, 31px);
+  font-size: clamp(15px, 3vw, 26px);
   font-weight: 500;
   color: #0c253c;
   margin: 0;
   line-height: 1.35;
 }
 
-.cross {
-  font-size: 22px;
-  color: #000000;
-  vertical-align: super;
-  margin-left: 1px;
+/* CLICK SUTIL */
+.clickable {
+  cursor: pointer;
+  position: relative;
 }
 
+.clickable::after {
+  content: '';
+  display: block;
+  width: 0%;
+  height: 1px;
+  background: #9dc7ec;
+  margin: 4px auto 0;
+  transition: width 0.3s ease;
+}
+
+.clickable:hover::after {
+  width: 40%;
+}
+
+/* CRUZ */
+.cross {
+  font-size: 18px;
+  color: #000;
+  vertical-align: super;
+  margin-left: 2px;
+}
+
+/* DIVIDER */
 .divider {
   width: 90px;
   height: 1px;
@@ -114,6 +137,24 @@ h2 {
   margin: 36px auto;
 }
 
+/* MODAL */
+.photo-modal {
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* IMAGEN CIRCULAR */
+.photo-img {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 20%; /* 👈 ajusta el encuadre */
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .parents-section {
     padding: 80px 18px;
@@ -131,6 +172,11 @@ h2 {
 
   .parent-title {
     letter-spacing: 3px;
+  }
+
+  .photo-img {
+    width: 220px;
+    height: 220px;
   }
 }
 </style>

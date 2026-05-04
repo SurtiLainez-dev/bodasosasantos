@@ -11,7 +11,12 @@
           sm="6"
           md="4"
       >
-        <v-card class="stat-card" elevation="0">
+        <v-card
+            class="stat-card"
+            elevation="0"
+            :class="{ clickable: item.to }"
+            @click="goTo(item.to)"
+        >
           <v-icon size="34" class="mb-4">{{ item.icon }}</v-icon>
           <h2>{{ item.value }}</h2>
           <p>{{ item.title }}</p>
@@ -27,9 +32,16 @@ definePageMeta({
   middleware: 'admin-auth'
 })
 
+const router = useRouter()
+
 const { data } = await useFetch('/api/admin/dashboard')
 
 const stats = computed(() => data.value?.stats || {})
+
+const goTo = (to?: string) => {
+  if (!to) return
+  router.push(to)
+}
 
 const cards = computed(() => [
   {
@@ -40,7 +52,8 @@ const cards = computed(() => [
   {
     title: 'Invitados confirmados',
     value: stats.value.invitados_confirmados || 0,
-    icon: 'mdi-check-circle-outline'
+    icon: 'mdi-check-circle-outline',
+    to: '/admin/evento/confirmados'
   },
   {
     title: 'Invitaciones sin respuesta',
@@ -74,7 +87,7 @@ const cards = computed(() => [
 .section-kicker {
   text-transform: uppercase;
   letter-spacing: 4px;
-  color: #9b7a55;
+  color: #2984d1;
   font-size: 13px;
 }
 
@@ -82,23 +95,33 @@ h1 {
   font-family: Georgia, serif;
   font-size: 48px;
   font-weight: 400;
-  color: #2f2923;
+  color: #0c253c;
 }
 
 .stat-card {
   padding: 30px;
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(199, 166, 125, 0.25);
-  color: #8a643d;
+  border: 1px solid rgba(157, 199, 236, 0.55);
+  color: #2984d1;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card.clickable {
+  cursor: pointer;
+}
+
+.stat-card.clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 45px rgba(12, 37, 60, 0.12);
 }
 
 .stat-card h2 {
   font-size: 42px;
-  color: #2f2923;
+  color: #0c253c;
 }
 
 .stat-card p {
-  color: #5b5048;
+  color: #133d62;
 }
 </style>
