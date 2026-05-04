@@ -7,7 +7,15 @@
       </p>
 
       <v-card class="parent-card" elevation="0">
-        <!-- NOVIA -->
+        <div class="parent-block">
+          <p class="parent-title">Padres del novio</p>
+
+          <p class="parent-name">Oscar Omar Santos</p>
+          <p class="parent-name">Josefina Lainez Sandoval</p>
+        </div>
+
+        <div class="divider"></div>
+
         <div class="parent-block">
           <p class="parent-title">Padres de la novia</p>
 
@@ -20,16 +28,6 @@
           </p>
 
           <p class="parent-name">Elsy Beatriz Mejia Fuentes</p>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- NOVIO -->
-        <div class="parent-block">
-          <p class="parent-title">Padres del novio</p>
-
-          <p class="parent-name">Oscar Omar Santos</p>
-          <p class="parent-name">Josefina Lainez Sandoval</p>
         </div>
       </v-card>
     </div>
