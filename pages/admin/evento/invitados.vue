@@ -237,7 +237,7 @@ const openDetails = (item: any) => {
 }
 
 const invitationLink = (item: any) => {
-  return `http://localhost:3000/?token=${item.token_acceso}`
+  return `https://bodasosasantos.online/?token=${item.token_acceso}`
 }
 
 const formatDate = (date: any) => {
