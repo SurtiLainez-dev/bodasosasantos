@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const invitacion = rows[0]
-    const url = `http://localhost:3000/?token=${invitacion.token_acceso}`
+    const url = `https://bodasosasantos.online/?token=${invitacion.token_acceso}`
 
     const qrDataUrl = await QRCode.toDataURL(url, {
         width: 900,

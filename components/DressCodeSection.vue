@@ -12,7 +12,7 @@
 
         <!-- TIPO -->
         <p class="dress-type">
-          Formal / Semi formal
+          Elegante Formal / Semi formal
         </p>
 
         <!-- MENSAJE -->
