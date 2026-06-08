@@ -37,17 +37,12 @@ const photos = [
   {src: '/images/portada12.jpeg', class: 'wide'},
   {src: '/images/portada13.jpeg', class: 'wide'},
   {src: '/images/portada14.jpeg', class: 'wide'},
-  {src: '/images/bw_0.jpg', class: 'wide'},
-  {src: '/images/bw_1.jpg', class: 'wide'},
-  {src: '/images/bw_2.jpg', class: 'wide'},
-  {src: '/images/bw_3.jpg', class: 'wide'},
-  {src: '/images/bw_4.jpg', class: 'wide'},
-  {src: '/images/bw_5.jpg', class: 'wide'},
-  {src: '/images/bw_6.jpg', class: 'wide'},
-  {src: '/images/bw_7.jpg', class: 'wide'},
-  {src: '/images/bw_8.jpg', class: 'wide'},
-  {src: '/images/bw_9.jpg', class: 'wide'},
-  {src: '/images/bw_10.jpg', class: 'wide'},
+  {src: '/images/ft1.jpeg', class: 'wide'},
+  {src: '/images/ft2.jpeg', class: 'wide'},
+  {src: '/images/ft3.jpeg', class: 'wide'},
+  {src: '/images/ft4.jpeg', class: 'wide'},
+  {src: '/images/ft5.jpeg', class: 'wide'},
+
 ]
 </script>
 
