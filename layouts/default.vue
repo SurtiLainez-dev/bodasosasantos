@@ -18,7 +18,7 @@
 
     <v-footer class="footer">
       <div class="footer-content">
-        <p>Andrea & Williams</p>
+        <p>Williams & Andrea</p>
         <small>Gracias por ser parte de nuestra historia.</small>
       </div>
     </v-footer>
