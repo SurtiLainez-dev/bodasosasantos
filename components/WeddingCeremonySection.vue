@@ -30,7 +30,7 @@
 
               <div class="info-row">
                 <v-icon size="22">mdi-clock-outline</v-icon>
-                <span>2:00 PM</span>
+                <span>3:00 PM</span>
               </div>
 
               <p class="ceremony-text">
