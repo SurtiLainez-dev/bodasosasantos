@@ -6,47 +6,67 @@
         <h1>Invitados confirmados</h1>
       </div>
 
-      <v-btn variant="tonal" color="primary" rounded="xl" to="/admin/evento">
+      <v-btn
+          variant="tonal"
+          color="primary"
+          rounded="xl"
+          to="/admin/evento"
+      >
         <v-icon start>mdi-arrow-left</v-icon>
         Volver
       </v-btn>
     </div>
 
+    <!-- RESUMEN -->
     <div class="stats-grid">
       <v-card class="stat-card" elevation="0">
         <span>Total invitados</span>
         <strong>{{ totalConfirmados }}</strong>
       </v-card>
 
-      <v-card class="stat-card novio" elevation="0">
+      <v-card class="stat-card novio-card" elevation="0">
         <span>Total invitados del novio</span>
         <strong>{{ totalNovio }}</strong>
       </v-card>
 
-      <v-card class="stat-card novia" elevation="0">
+      <v-card class="stat-card novia-card" elevation="0">
         <span>Total invitados de la novia</span>
         <strong>{{ totalNovia }}</strong>
       </v-card>
     </div>
 
+    <!-- TABLAS -->
     <div class="tables-grid">
+
+      <!-- NOVIO -->
       <v-card class="list-card" elevation="0">
         <div class="table-head">
           <div>
             <p class="table-kicker">Lista del novio</p>
             <h2>Invitados del novio</h2>
           </div>
-          <div class="mini-total">{{ totalNovio }}</div>
+
+          <div class="mini-total">
+            {{ totalNovio }}
+          </div>
         </div>
 
         <v-divider class="my-4" />
 
-        <div v-for="item in invitadosNovio" :key="item.id" class="guest-row">
+        <div
+            v-for="item in invitadosNovio"
+            :key="item.id"
+            class="guest-row"
+        >
           <div>
             <h3>{{ item.nombre }}</h3>
+
             <p>
               Código: {{ item.cod_reserva }}
-              <span v-if="item.telefono"> · Tel: {{ item.telefono }}</span>
+
+              <span v-if="item.telefono">
+                · Tel: {{ item.telefono }}
+              </span>
             </p>
           </div>
 
@@ -55,28 +75,43 @@
           </div>
         </div>
 
-        <div v-if="!invitadosNovio.length" class="empty">
-          Aún no hay invitados confirmados del novio.
+        <div
+            v-if="!invitadosNovio.length"
+            class="empty"
+        >
+          No hay invitados confirmados del novio.
         </div>
       </v-card>
 
+      <!-- NOVIA -->
       <v-card class="list-card" elevation="0">
         <div class="table-head">
           <div>
             <p class="table-kicker">Lista de la novia</p>
             <h2>Invitados de la novia</h2>
           </div>
-          <div class="mini-total">{{ totalNovia }}</div>
+
+          <div class="mini-total">
+            {{ totalNovia }}
+          </div>
         </div>
 
         <v-divider class="my-4" />
 
-        <div v-for="item in invitadosNovia" :key="item.id" class="guest-row">
+        <div
+            v-for="item in invitadosNovia"
+            :key="item.id"
+            class="guest-row"
+        >
           <div>
             <h3>{{ item.nombre }}</h3>
+
             <p>
               Código: {{ item.cod_reserva }}
-              <span v-if="item.telefono"> · Tel: {{ item.telefono }}</span>
+
+              <span v-if="item.telefono">
+                · Tel: {{ item.telefono }}
+              </span>
             </p>
           </div>
 
@@ -85,10 +120,14 @@
           </div>
         </div>
 
-        <div v-if="!invitadosNovia.length" class="empty">
-          Aún no hay invitados confirmados de la novia.
+        <div
+            v-if="!invitadosNovia.length"
+            class="empty"
+        >
+          No hay invitados confirmados de la novia.
         </div>
       </v-card>
+
     </div>
   </div>
 </template>
@@ -101,42 +140,39 @@ definePageMeta({
 
 const { data } = await useFetch('/api/admin/confirmados')
 
-const invitados = computed(() => data.value?.invitados || [])
-
-const getGrupo = (item: any) => {
-  return String(
-      item.lado ||
-      item.tipo ||
-      item.grupo ||
-      item.invitado_de ||
-      item.familia ||
-      ''
-  ).toLowerCase()
-}
+const invitados = computed(() => {
+  return data.value?.invitados || []
+})
 
 const invitadosNovio = computed(() => {
   return invitados.value.filter((item: any) => {
-    const grupo = getGrupo(item)
-    return grupo.includes('novio')
+    return item.tipo === 'novio'
   })
 })
 
 const invitadosNovia = computed(() => {
   return invitados.value.filter((item: any) => {
-    const grupo = getGrupo(item)
-    return grupo.includes('novia')
+    return item.tipo === 'novia'
   })
 })
 
-const sumarConfirmados = (lista: any[]) => {
-  return lista.reduce((total: number, item: any) => {
+const totalConfirmados = computed(() => {
+  return invitados.value.reduce((total: number, item: any) => {
     return total + Number(item.cantidad_confirmados || 0)
   }, 0)
-}
+})
 
-const totalConfirmados = computed(() => sumarConfirmados(invitados.value))
-const totalNovio = computed(() => sumarConfirmados(invitadosNovio.value))
-const totalNovia = computed(() => sumarConfirmados(invitadosNovia.value))
+const totalNovio = computed(() => {
+  return invitadosNovio.value.reduce((total: number, item: any) => {
+    return total + Number(item.cantidad_confirmados || 0)
+  }, 0)
+})
+
+const totalNovia = computed(() => {
+  return invitadosNovia.value.reduce((total: number, item: any) => {
+    return total + Number(item.cantidad_confirmados || 0)
+  }, 0)
+})
 </script>
 
 <style scoped>
@@ -144,22 +180,20 @@ const totalNovia = computed(() => sumarConfirmados(invitadosNovia.value))
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 28px;
   gap: 16px;
+  margin-bottom: 28px;
 }
 
-.section-kicker,
-.table-kicker {
+.section-kicker {
   text-transform: uppercase;
   letter-spacing: 4px;
   color: #2984d1;
   font-size: 13px;
-  margin-bottom: 4px;
 }
 
 h1 {
   font-family: Georgia, serif;
-  font-size: 48px;
+  font-size: 52px;
   font-weight: 400;
   color: #0c253c;
 }
@@ -174,31 +208,29 @@ h1 {
 .stat-card {
   padding: 24px;
   border-radius: 28px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(157, 199, 236, 0.55);
-  color: #133d62;
+  border: 1px solid rgba(157,199,236,.55);
+  background: rgba(255,255,255,.9);
 }
 
 .stat-card span {
   display: block;
-  font-size: 14px;
-  margin-bottom: 10px;
+  color: #35587b;
+  font-size: 15px;
+  margin-bottom: 8px;
 }
 
 .stat-card strong {
-  display: block;
-  font-size: 42px;
-  line-height: 1;
+  font-size: 56px;
   color: #0c253c;
+  line-height: 1;
 }
 
-.stat-card.novio {
+.novio-card {
   background: #eaf3fb;
 }
 
-.stat-card.novia {
+.novia-card {
   background: #f7edf3;
-  border-color: rgba(213, 166, 193, 0.55);
 }
 
 .tables-grid {
@@ -210,35 +242,42 @@ h1 {
 .list-card {
   padding: 26px;
   border-radius: 28px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(157, 199, 236, 0.55);
+  background: rgba(255,255,255,.9);
+  border: 1px solid rgba(157,199,236,.55);
 }
 
 .table-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 14px;
+}
+
+.table-kicker {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #2984d1;
+  font-size: 13px;
+  margin-bottom: 10px;
 }
 
 .table-head h2 {
   font-family: Georgia, serif;
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 400;
   color: #0c253c;
 }
 
 .mini-total {
-  min-width: 54px;
-  height: 54px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: #0c253c;
   color: white;
+  font-weight: 700;
+  font-size: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  font-weight: 700;
 }
 
 .guest-row {
@@ -247,7 +286,7 @@ h1 {
   align-items: center;
   gap: 18px;
   padding: 18px 0;
-  border-bottom: 1px solid rgba(157, 199, 236, 0.32);
+  border-bottom: 1px solid rgba(157,199,236,.25);
 }
 
 .guest-row:last-child {
@@ -256,44 +295,42 @@ h1 {
 
 .guest-row h3 {
   font-family: Georgia, serif;
-  font-size: 22px;
-  font-weight: 400;
   color: #0c253c;
+  font-size: 22px;
   margin-bottom: 4px;
 }
 
 .guest-row p {
-  color: #54708a;
+  color: #6a8299;
   font-size: 14px;
 }
 
 .guest-count {
-  min-width: 50px;
-  height: 50px;
+  min-width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: #0c253c;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 19px;
   font-weight: 700;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .empty {
-  padding: 40px 0;
+  padding: 50px 0;
   text-align: center;
-  color: #54708a;
+  color: #6a8299;
 }
 
 @media (max-width: 960px) {
-  .stats-grid,
-  .tables-grid {
+  .stats-grid {
     grid-template-columns: 1fr;
   }
 
-  h1 {
-    font-size: 40px;
+  .tables-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -304,33 +341,15 @@ h1 {
   }
 
   h1 {
-    font-size: 36px;
-  }
-
-  .stat-card {
-    padding: 20px;
-    border-radius: 24px;
-  }
-
-  .stat-card strong {
     font-size: 38px;
   }
 
-  .list-card {
-    padding: 20px;
-    border-radius: 24px;
-  }
-
-  .table-head h2 {
-    font-size: 26px;
+  .stat-card strong {
+    font-size: 42px;
   }
 
   .guest-row {
     align-items: flex-start;
-  }
-
-  .guest-row h3 {
-    font-size: 20px;
   }
 }
 </style>
