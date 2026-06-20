@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
     SELECT
       id,
       nombre,
+      tipo,
       COALESCE(cantidad_confirmados, 0) AS cantidad_confirmados,
       telefono,
       fecha_respuesta,
