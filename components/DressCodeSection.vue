@@ -17,13 +17,13 @@
 
         <!-- MENSAJE -->
         <p class="dress-text">
-          Puedes optar por un estilo formal o semi formal que te haga sentir cómodo/a y acorde al ambiente.
+          Puedes optar por un estilo formal o elegante que te haga sentir cómodo/a y acorde al ambiente.
         </p>
 
         <!-- REGLA -->
         <div class="dress-warning">
           <v-icon size="18">mdi-alert-circle-outline</v-icon>
-          <span>Evitar vestir de blanco</span>
+          <span>Blanco exclusivo para la novia.</span>
         </div>
 
       </v-card>
