@@ -73,7 +73,7 @@ export default defineEventHandler(async (event) => {
         const now = new Date()
         const vencimiento = new Date(invitacion.fecha_vencimiento)
 
-        if (now > vencimiento) {
+        if (now >= vencimiento) {
             throw createError({
                 statusCode: 410,
                 statusMessage: 'El tiempo para confirmar asistencia ya finalizó.'
