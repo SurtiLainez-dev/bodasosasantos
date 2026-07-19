@@ -26,6 +26,18 @@
         </v-btn>
 
         <v-btn
+            variant="tonal"
+            color="primary"
+            rounded="xl"
+            prepend-icon="mdi-printer-outline"
+            :loading="imprimiendoMesas"
+            :disabled="pendingMesas || mesas.length === 0"
+            @click="imprimirMesas"
+        >
+          Imprimir
+        </v-btn>
+
+        <v-btn
             color="primary"
             rounded="xl"
             prepend-icon="mdi-plus"
@@ -897,6 +909,7 @@
 
 <script setup lang="ts">
 import { useDisplay } from 'vuetify'
+const imprimiendoMesas = ref(false)
 
 definePageMeta({
   layout: 'admin',
@@ -1006,7 +1019,93 @@ const {
       })
     }
 )
+const imprimirMesas = async () => {
+  if (imprimiendoMesas.value) {
+    return
+  }
 
+  imprimiendoMesas.value = true
+
+  try {
+    const respuesta = await fetch(
+        '/api/admin/mesas/imprimir',
+        {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            Accept: 'application/pdf'
+          }
+        }
+    )
+
+    if (!respuesta.ok) {
+      let mensaje =
+          'No se pudo generar el PDF de las mesas.'
+
+      try {
+        const error = await respuesta.json()
+
+        mensaje =
+            error?.statusMessage ||
+            error?.message ||
+            mensaje
+      } catch {
+        // La respuesta no era JSON.
+      }
+
+      throw new Error(mensaje)
+    }
+
+    const pdfBlob = await respuesta.blob()
+
+    const disposition =
+        respuesta.headers.get(
+            'content-disposition'
+        )
+
+    let nombreArchivo =
+        `mesas-invitados-${new Date()
+            .toISOString()
+            .slice(0, 10)}.pdf`
+
+    const coincidencia =
+        disposition?.match(
+            /filename="?([^"]+)"?/i
+        )
+
+    if (coincidencia?.[1]) {
+      nombreArchivo =
+          coincidencia[1].trim()
+    }
+
+    const pdfUrl =
+        URL.createObjectURL(pdfBlob)
+
+    const enlace =
+        document.createElement('a')
+
+    enlace.href = pdfUrl
+    enlace.download = nombreArchivo
+
+    document.body.appendChild(enlace)
+    enlace.click()
+    enlace.remove()
+
+    URL.revokeObjectURL(pdfUrl)
+
+    mostrarMensaje(
+        'PDF generado correctamente.'
+    )
+  } catch (error: any) {
+    mostrarMensaje(
+        error?.message ||
+        'No se pudo generar el PDF de las mesas.',
+        'error'
+    )
+  } finally {
+    imprimiendoMesas.value = false
+  }
+}
 const mesas = computed<Mesa[]>(() => {
   return data.value?.mesas || []
 })
