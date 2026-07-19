@@ -35,9 +35,14 @@ type InvitacionDetalle = {
 export default defineEventHandler(async (event) => {
     await requireAdmin(event)
 
-    const mesaId = Number(getRouterParam(event, 'id'))
+    const mesaId = Number(
+        getRouterParam(event, 'id')
+    )
 
-    if (!Number.isInteger(mesaId) || mesaId < 1) {
+    if (
+        !Number.isInteger(mesaId) ||
+        mesaId < 1
+    ) {
         throw createError({
             statusCode: 400,
             statusMessage: 'Mesa inválida.'
@@ -45,43 +50,56 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
-        const [mesas] = await db.execute<MesaRow[]>(
-            `
-                SELECT
-                    id,
-                    nombre,
-                    numero,
-                    capacidad
-                FROM mesas
-                WHERE id = ?
-                LIMIT 1
-            `,
-            [mesaId]
-        )
+        const [mesas] =
+            await db.execute<MesaRow[]>(
+                `
+                    SELECT
+                        id,
+                        nombre,
+                        numero,
+                        capacidad
+                    FROM mesas
+                    WHERE id = ?
+                    LIMIT 1
+                `,
+                [mesaId]
+            )
 
         const mesa = mesas[0]
 
         if (!mesa) {
             throw createError({
                 statusCode: 404,
-                statusMessage: 'La mesa no fue encontrada.'
+                statusMessage:
+                    'La mesa no fue encontrada.'
             })
         }
 
-        const [sillas] = await db.execute<SillaRow[]>(
-            `
-                SELECT
-                    *
-                FROM sillas AS s
-                INNER JOIN invitaciones AS i
-                    ON i.id = s.invitacion_id
-                WHERE s.mesa_id = ?
-                ORDER BY
-                    i.nombre ASC,
-                    s.id ASC
-            `,
-            [mesaId]
-        )
+        const [sillas] =
+            await db.execute<SillaRow[]>(
+                `
+                    SELECT
+                        s.id AS silla_id,
+                        s.nombre AS silla_nombre,
+                        s.invitacion_id,
+
+                        i.nombre AS invitacion_nombre,
+                        i.cod_reserva,
+                        i.cantidad_confirmados
+
+                    FROM sillas AS s
+
+                    INNER JOIN invitaciones AS i
+                        ON i.id = s.invitacion_id
+
+                    WHERE s.mesa_id = ?
+
+                    ORDER BY
+                        i.nombre ASC,
+                        s.id ASC
+                `,
+                [mesaId]
+            )
 
         const invitacionesMap =
             new Map<number, InvitacionDetalle>()
@@ -91,24 +109,40 @@ export default defineEventHandler(async (event) => {
                 silla.invitacion_id
             )
 
-            if (!invitacionesMap.has(invitacionId)) {
-                invitacionesMap.set(invitacionId, {
-                    id: invitacionId,
-                    nombre:
-                        silla.invitacion_nombre ||
-                        'Invitación sin nombre',
-                    cod_reserva:
-                        silla.cod_reserva || '',
-                    cantidad_confirmados: Number(
-                        silla.cantidad_confirmados || 0
-                    ),
-                    cantidad_sillas: 0,
-                    sillas: []
-                })
+            if (
+                !invitacionesMap.has(
+                    invitacionId
+                )
+            ) {
+                invitacionesMap.set(
+                    invitacionId,
+                    {
+                        id: invitacionId,
+
+                        nombre:
+                            silla.invitacion_nombre ||
+                            'Invitación sin nombre',
+
+                        cod_reserva:
+                            silla.cod_reserva || '',
+
+                        cantidad_confirmados:
+                            Number(
+                                silla.cantidad_confirmados ||
+                                0
+                            ),
+
+                        cantidad_sillas: 0,
+
+                        sillas: []
+                    }
+                )
             }
 
             const invitacion =
-                invitacionesMap.get(invitacionId)
+                invitacionesMap.get(
+                    invitacionId
+                )
 
             if (!invitacion) {
                 continue
@@ -117,17 +151,26 @@ export default defineEventHandler(async (event) => {
             invitacion.cantidad_sillas += 1
 
             invitacion.sillas.push({
-                id: Number(silla.silla_id),
-                nombre: silla.silla_nombre || ''
+                id: Number(
+                    silla.silla_id
+                ),
+
+                nombre:
+                    silla.silla_nombre || ''
             })
         }
 
-        const invitaciones = Array.from(
-            invitacionesMap.values()
+        const invitaciones =
+            Array.from(
+                invitacionesMap.values()
+            )
+
+        const capacidad = Number(
+            mesa.capacidad || 0
         )
 
-        const capacidad = Number(mesa.capacidad || 0)
-        const sillasOcupadas = sillas.length
+        const sillasOcupadas =
+            sillas.length
 
         return {
             success: true,
@@ -137,18 +180,25 @@ export default defineEventHandler(async (event) => {
 
                 nombre:
                     mesa.nombre ||
-                    `Mesa ${Number(mesa.numero)}`,
+                    `Mesa ${Number(
+                        mesa.numero
+                    )}`,
 
-                numero: Number(mesa.numero),
+                numero: Number(
+                    mesa.numero
+                ),
 
                 capacidad,
 
-                sillas_ocupadas: sillasOcupadas,
+                sillas_ocupadas:
+                sillasOcupadas,
 
-                sillas_disponibles: Math.max(
-                    capacidad - sillasOcupadas,
-                    0
-                ),
+                sillas_disponibles:
+                    Math.max(
+                        capacidad -
+                        sillasOcupadas,
+                        0
+                    ),
 
                 porcentaje_ocupacion:
                     capacidad > 0
@@ -170,12 +220,23 @@ export default defineEventHandler(async (event) => {
         console.error(
             'ERROR AL CARGAR DETALLE DE MESA:',
             {
-                message: error?.message,
-                code: error?.code,
-                errno: error?.errno,
-                sqlMessage: error?.sqlMessage,
-                sql: error?.sql,
-                stack: error?.stack
+                message:
+                error?.message,
+
+                code:
+                error?.code,
+
+                errno:
+                error?.errno,
+
+                sqlMessage:
+                error?.sqlMessage,
+
+                sql:
+                error?.sql,
+
+                stack:
+                error?.stack
             }
         )
 
@@ -185,6 +246,7 @@ export default defineEventHandler(async (event) => {
 
         throw createError({
             statusCode: 500,
+
             statusMessage:
                 error?.sqlMessage ||
                 error?.message ||
