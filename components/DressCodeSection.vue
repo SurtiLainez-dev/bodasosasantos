@@ -48,7 +48,7 @@
 
         <!-- MENSAJE -->
         <p class="dress-text">
-          No hay mejor regalo que celebrar juntos. pero si quieres tener un detalle con nosotros puedes hacerlo en efectivo.
+          No hay mejor regalo que celebrar juntos, pero si deseas tener un detalle con nosotros puedes hacerlo en efectivo.
         </p>
 
         <!-- REGLA -->
