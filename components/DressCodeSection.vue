@@ -41,10 +41,10 @@
           <v-icon size="36">mdi-gift-outline</v-icon>
         </div>
 
-        <!-- TIPO -->
-<!--        <p class="dress-type">-->
-<!--          Elegante / Formal-->
-<!--        </p>-->
+         TIPO
+        <p class="dress-type">
+          Regalos
+        </p>
 
         <!-- MENSAJE -->
         <p class="dress-text">
