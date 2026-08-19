@@ -257,9 +257,9 @@
     <ParentsSection />
     <WeddingCeremonySection />
     <WeddingReceptionSection  />
-    <DressCodeSection v-if="invitacionValida" />
+    <DressCodeSection  />
     <TipSection/>
-    <WeddingRsvpSection :show-whatsapp="invitacionValida" />
+    <WeddingRsvpSection :show-whatsapp="true" />
     <WeddingGallerySection />
   </div>
 </template>

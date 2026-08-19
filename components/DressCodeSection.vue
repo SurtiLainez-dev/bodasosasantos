@@ -29,6 +29,37 @@
       </v-card>
     </div>
   </section>
+
+  <section class="dress-section">
+    <div class="dress-container">
+      <p class="section-kicker">Regalos</p>
+
+      <v-card class="dress-card" elevation="0">
+
+        <!-- ICONO PRINCIPAL -->
+        <div class="dress-icon">
+          <v-icon size="36">mdi-gift-outline</v-icon>
+        </div>
+
+        <!-- TIPO -->
+<!--        <p class="dress-type">-->
+<!--          Elegante / Formal-->
+<!--        </p>-->
+
+        <!-- MENSAJE -->
+        <p class="dress-text">
+          No hay mejor regalo que celebrar juntos. pero si quieres tener un detalle con nosotros puedes hacerlo en efectivo.
+        </p>
+
+        <!-- REGLA -->
+<!--        <div class="dress-warning">-->
+<!--          <v-icon size="18">mdi-alert-circle-outline</v-icon>-->
+<!--          <span>Blanco exclusivo para la novia.</span>-->
+<!--        </div>-->
+
+      </v-card>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">

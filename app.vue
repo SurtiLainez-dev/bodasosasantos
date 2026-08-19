@@ -1,8 +1,4 @@
 <template>
-  <WeddingGuestNotice
-      v-if="showGuestNotice"
-      message="Eres un invitado que no está en lista"
-  />
 
   <WeddingEnvelopeIntro
       v-if="showEnvelope"

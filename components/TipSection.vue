@@ -31,10 +31,6 @@
             <span>Con mucho cariño, esta será una celebración exclusivamente para adultos.</span>
           </div>
 
-          <div class="tip-item">
-            <v-icon size="22">mdi-gift-outline</v-icon>
-            <span>No hay mejor regalo que celebrar juntos. pero si quieres tener un detalle con nosotros puedes hacerlo en efectivo.</span>
-          </div>
         </div>
 
       </v-card>
