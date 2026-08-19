@@ -1,7 +1,7 @@
 <template>
   <section class="dress-section">
     <div class="dress-container">
-      <p class="section-kicker">Código de vestimenta</p>
+      <p class="section-kicker">Código de vestimenta y Regalos</p>
 
       <v-card class="dress-card" elevation="0">
 
@@ -32,7 +32,6 @@
 
   <section class="dress-section">
     <div class="dress-container">
-      <p class="section-kicker">Regalos</p>
 
       <v-card class="dress-card" elevation="0">
 
